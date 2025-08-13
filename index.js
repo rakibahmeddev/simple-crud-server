@@ -4,8 +4,12 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// middleware 
 app.use(cors());
+app.use(express.json());
 
+
+// MongoDB connection URI
 const uri =
   'mongodb+srv://rakibahmed:rakibahmed@simplecrud.ymlsv98.mongodb.net/?retryWrites=true&w=majority&appName=simpleCRUD';
 
@@ -18,10 +22,21 @@ const client = new MongoClient(uri, {
   },
 });
 
+const userDB = client.db("userDB");
+const userCollection = userDB.collection("UserCollection");
+
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    app.post('/users', async(req, res)=> {
+        const user = req.body;
+        console.log('new user', user);
+    })
+
+
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
     console.log(
