@@ -31,6 +31,12 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    app.get('/users', async(rq, res) => {
+        const cursor = userCollection.find();
+        const users = await cursor.toArray();
+        res.send(users);
+    })
+
     app.post('/users', async(req, res)=> {
         const user = req.body;
         console.log('new user', user);
